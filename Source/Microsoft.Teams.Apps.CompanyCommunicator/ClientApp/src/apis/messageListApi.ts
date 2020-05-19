@@ -67,3 +67,8 @@ export const getAuthenticationConsentMetadata = async (windowLocationOriginDomai
     let url = `${baseAxiosUrl}/authenticationMetadata/consentUrl?windowLocationOriginDomain=${windowLocationOriginDomain}&loginhint=${login_hint}`;
     return await axios.get(url, undefined, false);
 }
+
+export const getEnableDisableOption = (): Promise<any> => {
+    let url = baseAxiosUrl + "/teamData/isOptionEnableDisable";
+    return axios.get(url);
+}

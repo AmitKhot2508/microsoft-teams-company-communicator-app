@@ -12,6 +12,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Teams.Apps.CompanyCommunicator.Authentication;
     using Microsoft.Teams.Apps.CompanyCommunicator.Bot;
+    using Microsoft.Teams.Apps.CompanyCommunicator.Models;
     using Microsoft.Teams.Apps.CompanyCommunicator.NotificationDelivery;
     using Microsoft.Teams.Apps.CompanyCommunicator.Repositories;
 
@@ -60,6 +61,8 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator
             services.AddRepositories();
 
             services.AddNotificationDelivery();
+
+            services.Configure<OptionSetting>(this.Configuration.GetSection("OptionSetting"));
         }
 
         /// <summary>

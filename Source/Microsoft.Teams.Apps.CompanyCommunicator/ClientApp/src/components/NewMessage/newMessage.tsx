@@ -6,7 +6,7 @@ import * as AdaptiveCards from "adaptivecards";
 import { Button, Loader, Dropdown, Text } from '@stardust-ui/react';
 import * as microsoftTeams from "@microsoft/teams-js";
 import { RouteComponentProps } from 'react-router-dom';
-import { getDraftNotification, getTeams, createDraftNotification, updateDraftNotification } from '../../apis/messageListApi';
+import { getDraftNotification, getTeams, createDraftNotification, updateDraftNotification, getEnableDisableOption } from '../../apis/messageListApi';
 import {
     getInitAdaptiveCard, setCardTitle, setCardImageLink, setCardSummary,
     setCardAuthor, setCardBtn
@@ -65,6 +65,7 @@ export interface INewMessageProps extends RouteComponentProps {
 
 export default class NewMessage extends React.Component<INewMessageProps, formState> {
     private card: any;
+    private IsEnableDisableOption: boolean = false;
 
     constructor(props: INewMessageProps) {
         super(props);
@@ -93,6 +94,15 @@ export default class NewMessage extends React.Component<INewMessageProps, formSt
             selectedRosters: [],
             errorImageUrlMessage: "",
             errorButtonUrlMessage: "",
+        }
+    }
+
+    private getAppSettingValue = async () => {
+        try {
+            const response = await getEnableDisableOption();
+            this.IsEnableDisableOption = response.data;
+        } catch (error) {
+            return error;
         }
     }
 
@@ -161,6 +171,7 @@ export default class NewMessage extends React.Component<INewMessageProps, formSt
             this.setState({
                 teams: response.data
             });
+            this.getAppSettingValue();
         } catch (error) {
             return error;
         }
@@ -324,7 +335,7 @@ export default class NewMessage extends React.Component<INewMessageProps, formSt
                                         onSelectedChange={this.onRostersChange}
                                         noResultsMessage="We couldn't find any matches."
                                     />
-                                    <Radiobutton name="grouped" value="allUsers" label="Send in chat to everyone" />
+                                    <Radiobutton name="grouped" value="allUsers" label="Send in chat to everyone" disabled={!this.IsEnableDisableOption} />
                                     <div className={this.state.selectedRadioBtn === "allUsers" ? "" : "hide"}>
                                         <div className="noteText">
                                             <Text error content="Note: This option sends the message to everyone in your org who has access to the app." />
