@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './sendConfirmationTaskModule.scss';
-import { getDraftNotification, getConsentSummaries, sendDraftNotification } from '../../apis/messageListApi';
+import { getDraftNotification, getConsentSummaries, sendDraftNotification, getEnableDisableOption } from '../../apis/messageListApi';
 import { RouteComponentProps } from 'react-router-dom';
 import * as AdaptiveCards from "adaptivecards";
 import { Loader, Button, Text } from '@stardust-ui/react';
@@ -43,6 +43,7 @@ class SendConfirmationTaskModule extends React.Component<RouteComponentProps, IS
     };
 
     private card: any;
+    private IsEnableDisableOption: boolean = false;
 
     constructor(props: RouteComponentProps) {
         super(props);
@@ -57,6 +58,16 @@ class SendConfirmationTaskModule extends React.Component<RouteComponentProps, IS
             allUsers: false,
             messageId: 0,
         };
+        this.getAppSettingValue();
+    }
+
+    private getAppSettingValue = async () => {
+        try {
+            const response = await getEnableDisableOption();
+            this.IsEnableDisableOption = response.data;
+        } catch (error) {
+            return error;
+        }
     }
 
     public componentDidMount() {
@@ -141,7 +152,7 @@ class SendConfirmationTaskModule extends React.Component<RouteComponentProps, IS
                     <div className="footerContainer">
                         <div className="buttonContainer">
                             <Loader id="sendingLoader" className="hiddenLoader sendingLoader" size="smallest" label="Preparing message" labelPosition="end" />
-                            <Button content="Send" id="sendBtn" onClick={this.onSendMessage} primary />
+                            <Button content="Send" id="sendBtn" onClick={this.onSendMessage} primary disabled={this.state.allUsers && !this.IsEnableDisableOption} />
                         </div>
                     </div>
                 </div>
@@ -193,6 +204,15 @@ class SendConfirmationTaskModule extends React.Component<RouteComponentProps, IS
         if (!this.state.allUsers) {
             return (<div />);
         } else {
+            if (this.state.allUsers && !this.IsEnableDisableOption) {
+                return (<div key="allUsers">
+                    <span className="label">All users</span>
+                    <div className="noteText">
+                        <Text error content="Note: This option is disabled. Please contact administrator to get it enabled." />
+                    </div>
+                </div>);
+            }
+            else{
             return (<div key="allUsers">
                 <span className="label">All users</span>
                 <div className="noteText">
@@ -200,7 +220,8 @@ class SendConfirmationTaskModule extends React.Component<RouteComponentProps, IS
                 </div>
             </div>);
         }
-    }
+     }
+  }
 }
 
 export default SendConfirmationTaskModule;
