@@ -167,11 +167,12 @@ export default class NewMessage extends React.Component<INewMessageProps, formSt
 
     private getTeamList = async () => {
         try {
+            this.getAppSettingValue();
+            
             const response = await getTeams();
             this.setState({
                 teams: response.data
             });
-            this.getAppSettingValue();
         } catch (error) {
             return error;
         }
