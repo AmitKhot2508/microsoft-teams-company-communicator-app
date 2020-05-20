@@ -10,8 +10,8 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Models
     public class OptionSetting
     {
         /// <summary>
-        /// Gets or Sets IsOptionEnableDisable
+        /// Gets or Sets IsOptionSendToEveryoneEnabled
         /// </summary>
-        public string IsOptionEnableDisable { get; set; }
+        public string IsOptionSendToEveryoneEnabled { get; set; }
     }
 }
