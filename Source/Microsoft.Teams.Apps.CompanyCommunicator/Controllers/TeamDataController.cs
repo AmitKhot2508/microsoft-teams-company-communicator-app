@@ -64,7 +64,7 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Controllers
         [HttpGet("isOptionEnableDisable")]
         public bool GetConfigurationValue()
         {
-            var getConfigValue = this.configuration.GetValue<bool>("OptionSetting:IsOptionEnableDisable");
+            var getConfigValue = this.configuration.GetValue<bool>("OptionSetting:IsOptionSendToEveryoneEnabled");
             return getConfigValue;
         }
     }
