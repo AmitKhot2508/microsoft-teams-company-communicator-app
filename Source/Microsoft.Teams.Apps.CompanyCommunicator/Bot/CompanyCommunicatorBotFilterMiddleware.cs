@@ -47,11 +47,11 @@ namespace Microsoft.Teams.Apps.CompanyCommunicator.Bot
                 return;
             }
 
-            var isAllowedTenant = this.ValidateTenant(turnContext);
-            if (!isAllowedTenant)
-            {
-                return;
-            }
+            //var isAllowedTenant = this.ValidateTenant(turnContext);
+            //if (!isAllowedTenant)
+            //{
+             //   return;
+            //}
 
             await next(cancellationToken).ConfigureAwait(false);
         }
